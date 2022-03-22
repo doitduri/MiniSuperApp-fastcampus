@@ -5,7 +5,9 @@ protocol FinanceHomeDependency: Dependency {
   // created by this RIB.
 }
 
-final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency {
+final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency {
+    
+    var cardsOnFileRepository: CardOnFileRepository
     var balance: ReadOnlyCurrentValuePublisher<Double> { balancePublisher }
     private let balancePublisher: CurrentValuePublisher<Double>
     // CurrentValuePublisher의 자식 클래스 -> ReadOnlyCurrentValuePublisher
@@ -13,9 +15,11 @@ final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDash
     
     init(
         dependency: FinanceHomeDependency,
-        balance: CurrentValuePublisher<Double>
+        balance: CurrentValuePublisher<Double>,
+        cardsOnFileRepository: CardOnFileRepository
     ) {
         self.balancePublisher = balance
+        self.cardsOnFileRepository = cardsOnFileRepository
         super.init(dependency: dependency)
     }
 }
@@ -35,17 +39,23 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
   func build(withListener listener: FinanceHomeListener) -> FinanceHomeRouting {
     let balancePublisher = CurrentValuePublisher<Double>(0)
       
-    let component = FinanceHomeComponent(dependency: dependency, balance: balancePublisher)
+    let component = FinanceHomeComponent(
+        dependency: dependency,
+        balance: balancePublisher,
+        cardsOnFileRepository: CardOnFileRepositoryImp()
+    )
     let viewController = FinanceHomeViewController()
     let interactor = FinanceHomeInteractor(presenter: viewController)
     interactor.listener = listener
       
-    let superPayDashboardBulder = SuperPayDashboardBuilder(dependency: component)
+    let superPayDashboardBuilder = SuperPayDashboardBuilder(dependency: component)
+    let cardOnFileDashboardBuilder = CardOnFileDashboardBuilder(dependency: component)
       
     return FinanceHomeRouter(
         interactor: interactor,
         viewController: viewController,
-        superPayDashboardBuildable: superPayDashboardBulder
+        superPayDashboardBuildable: superPayDashboardBuilder,
+        cardOnFileDashboardBuildable: cardOnFileDashboardBuilder
     )
   }
 }

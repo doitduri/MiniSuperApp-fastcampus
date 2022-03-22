@@ -1,6 +1,6 @@
 import ModernRIBs
 
-protocol FinanceHomeInteractable: Interactable, SuperPayDashboardListener {
+protocol FinanceHomeInteractable: Interactable, SuperPayDashboardListener, CardOnFileDashboardListener {
     // 자식 Reblet의 Listener를 상속 받아줌
     var router: FinanceHomeRouting? { get set }
     var listener: FinanceHomeListener? { get set }
@@ -13,21 +13,27 @@ protocol FinanceHomeViewControllable: ViewControllable {
 final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHomeViewControllable>, FinanceHomeRouting {
     
     private let superPayDashboardBuildable: SuperPayDashboardBuildable
-    private var superPayRoutting: Routing?
+    private let cardOnFileDashboardBuildable: CardOnFileDashboardBuildable
+
+    private var superPayRouting: Routing?
+    private var cardOnFileRouting: Routing?
     
     init(
         interactor: FinanceHomeInteractable,
         viewController: FinanceHomeViewControllable,
-        superPayDashboardBuildable: SuperPayDashboardBuildable
+        superPayDashboardBuildable: SuperPayDashboardBuildable,
+        cardOnFileDashboardBuildable: CardOnFileDashboardBuildable
     ) {
         self.superPayDashboardBuildable = superPayDashboardBuildable
+        self.cardOnFileDashboardBuildable = cardOnFileDashboardBuildable
+        
         super.init(interactor: interactor, viewController: viewController)
         interactor.router = self
     }
     
     func attachSuperPayDashboard() {
         
-        if superPayRoutting != nil {
+        if superPayRouting != nil {
             return
         }
         
@@ -39,7 +45,20 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
         let dashboard = router.viewControllable
         viewController.addDashboard(dashboard)
         
-        self.superPayRoutting = router
+        self.superPayRouting = router
+        attachChild(router)
+    }
+    
+    func attachCardOnFileDashbaord() {
+        if cardOnFileRouting != nil {
+            return
+        }
+        
+        let router = cardOnFileDashboardBuildable.build(withListener: interactor)
+        let dashbaord = router.viewControllable
+        viewController.addDashboard(dashbaord)
+        
+        self.cardOnFileRouting = router
         attachChild(router)
     }
 }
