@@ -45,4 +45,14 @@ final class FinanceHomeViewController: UIViewController, FinanceHomePresentable,
             stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
     }
+    
+    func addDashboard(_ view: ViewControllable) {
+        let vc = view.uiviewController
+        
+        addChild(vc)
+        stackView.addArrangedSubview(vc.view)
+        vc.didMove(toParent: self)
+        // finance의 sub view로 구성하기 때문에, didMove() 메소드를 호출해서 ViewController의 life-cycle을 유지해줌
+        
+    }
 }
