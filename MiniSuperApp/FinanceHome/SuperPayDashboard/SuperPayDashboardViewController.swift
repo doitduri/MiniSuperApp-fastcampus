@@ -101,8 +101,8 @@ final class SuperPayDashboardViewController: UIViewController, SuperPayDashboard
         headerStackView.addArrangedSubview(topupButton)
         
         cardView.addSubview(balanceStackView)
-        balanceStackView.addArrangedSubview(currencyLabel)
         balanceStackView.addArrangedSubview(balanceAmountLabel)
+        balanceStackView.addArrangedSubview(currencyLabel)
         
         NSLayoutConstraint.activate([
             headerStackView.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
@@ -118,6 +118,10 @@ final class SuperPayDashboardViewController: UIViewController, SuperPayDashboard
             balanceStackView.centerXAnchor.constraint(equalTo: cardView.centerXAnchor),
             balanceStackView.centerYAnchor.constraint(equalTo: cardView.centerYAnchor)
         ])
+    }
+    
+    func updateBalance(_ balance: String) {
+        balanceAmountLabel.text = balance
     }
     
     @objc func topupButtonDidTap() {
