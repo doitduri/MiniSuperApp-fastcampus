@@ -95,4 +95,17 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     func cardOnFileDidTapClose() {
         router?.detachCardOnFile()
     }
+    
+    func cardOnFileDidTapAddCard() {
+        // attach add card
+    }
+    
+    func cardOnFileDidSelect(at index: Int) {
+        if let seleted = paymentMethods[safe: index] {
+            dependency.paymentMethodStream.send(seleted)
+        }
+        router?.detachCardOnFile()
+        // 카드 선택 시 화면 빠져나가기
+    }
+    
 }
