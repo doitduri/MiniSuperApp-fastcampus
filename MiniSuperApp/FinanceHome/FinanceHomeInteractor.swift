@@ -71,4 +71,7 @@ final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>
         router?.detachTopup()
     }
     
+    func topupDidFinish() {
+        router?.detachTopup()
+    }
 }

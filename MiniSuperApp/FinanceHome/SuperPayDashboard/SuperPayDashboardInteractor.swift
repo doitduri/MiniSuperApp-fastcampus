@@ -50,7 +50,9 @@ final class SuperPayDashboardInteractor: PresentableInteractor<SuperPayDashboard
     override func didBecomeActive() {
         super.didBecomeActive()
         
-        dependency.balance.sink { [weak self] balance in
+        dependency.balance
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] balance in
             // unwrapping을 위해 map으로 updateBalance 메소드 호출
             self?.dependency.balanceFormatter.string(from: NSNumber(value: balance)).map({
                 // interactor에서 UI를 업데이트 할 때는 presneter를 호출한다.

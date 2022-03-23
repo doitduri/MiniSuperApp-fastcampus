@@ -7,11 +7,9 @@ protocol FinanceHomeDependency: Dependency {
 
 final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency, AddPaymentMethodDependency, TopupDependency {
     
-    var cardsOnFileRepository: CardOnFileRepository
-    var balance: ReadOnlyCurrentValuePublisher<Double> { balancePublisher }
-    private let balancePublisher: CurrentValuePublisher<Double>
-    // CurrentValuePublisher의 자식 클래스 -> ReadOnlyCurrentValuePublisher
-    // 따라서 balance는 값을 업데이트하는 send를 호출 할 수 없음
+    let cardsOnFileRepository: CardOnFileRepository
+    let superPayRepository: SuperPayRepository
+    var balance: ReadOnlyCurrentValuePublisher<Double> { superPayRepository.balance }
     
     var topupBaseViewController: ViewControllable
     // Finance Reblet이 가지고 있는 Finance ViewController가 되면 됨
@@ -19,12 +17,12 @@ final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDash
     
     init(
         dependency: FinanceHomeDependency,
-        balance: CurrentValuePublisher<Double>,
         cardsOnFileRepository: CardOnFileRepository,
+        superPayRepository: SuperPayRepository,
         topupBaseViewController: ViewControllable
     ) {
-        self.balancePublisher = balance
         self.cardsOnFileRepository = cardsOnFileRepository
+        self.superPayRepository = superPayRepository
         self.topupBaseViewController = topupBaseViewController
         super.init(dependency: dependency)
     }
@@ -49,8 +47,8 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
         
         let component = FinanceHomeComponent(
             dependency: dependency,
-            balance: balancePublisher,
             cardsOnFileRepository: CardOnFileRepositoryImp(),
+            superPayRepository: SuperPayRepositoryImp(),
             topupBaseViewController: viewController
         )
         
