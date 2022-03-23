@@ -36,8 +36,12 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
     }
 
     func cleanupViews() {
-        // TODO: Since this router does not own its view, it needs to cleanup the views
-        // it may have added to the view hierarchy, when its interactor is deactivated.
+        if viewController.uiviewController.presentationController != nil,
+           navigationControllable != nil {
+            // viewController가 띄웠던 view가 있다면
+            
+            navigationControllable?.dismiss(completion: nil)
+        }
     }
 
     func attachAddPaymentMethod() {
