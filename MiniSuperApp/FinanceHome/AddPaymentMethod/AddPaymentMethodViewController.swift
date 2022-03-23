@@ -10,6 +10,7 @@ import UIKit
 
 protocol AddPaymentMethodPresentableListener: AnyObject {
     func didTapClose()
+    func didTapConfirm(with number: String, cvc: String, expiry: String)
 }
 
 final class AddPaymentMethodViewController: UIViewController, AddPaymentMethodPresentable, AddPaymentMethodViewControllable {
@@ -45,7 +46,7 @@ final class AddPaymentMethodViewController: UIViewController, AddPaymentMethodPr
     }()
     
     private lazy var addCardButton: UIButton = {
-       let button = UIButton()
+        let button = UIButton()
         button.translatesAutoresizingMaskIntoConstraints = false
         button.roundCorners()
         button.backgroundColor = .primaryRed
@@ -113,7 +114,11 @@ final class AddPaymentMethodViewController: UIViewController, AddPaymentMethodPr
     
     @objc
     private func didTapAddCard() {
-        
+        if let number = cardNumberTextField.text,
+           let cvc = securityTextField.text,
+           let expiry = expirationTextField.text {
+            listener?.didTapConfirm(with: number, cvc: cvc, expiry: expiry)
+        }
     }
     
     @objc
