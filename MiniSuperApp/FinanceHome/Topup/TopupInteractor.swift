@@ -15,6 +15,9 @@ protocol TopupRouting: Routing {
     
     func attachEnterAmount()
     func detachEnterAmount()
+    
+    func attachCardOnFile(paymentmethods: [PaymentMethod])
+    func detachCardOnFile()
 }
 
 protocol TopupListener: AnyObject {
@@ -23,6 +26,9 @@ protocol TopupListener: AnyObject {
 
 protocol TopupInteractorDependency {
     var cardsOnFileRepository: CardOnFileRepository { get }
+    var paymentMethodStream: CurrentValuePublisher<PaymentMethod> { get }
+    // topup Reblet은 paymentMethod Stream의 값을 직접 사용하기 때문에, read-only가 아닌 currentValue~ publisher를 사용한다.
+    // 그리고, 해당 값을 사용하는 주체이기 때문에 interactor의 dependency로 추가해준다.
 }
 
 final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodListener, AdaptivePresentationControllerDelegate {
@@ -31,6 +37,8 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     weak var listener: TopupListener?
     
     let presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy
+    
+    private var paymentMethods: [PaymentMethod] { self.dependency.cardsOnFileRepository.cardOnFile.value }
     
     private let dependency: TopupInteractorDependency
     
@@ -47,13 +55,11 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
         super.didBecomeActive()
         
         // 카드의 개수에 따라서 다른 화면을 띄우기
-        if dependency.cardsOnFileRepository.cardOnFile.value.isEmpty {
-            // 카드 추가 화면
-            router?.attachAddPaymentMethod()
-        
-        } else {
-            // 금액 입력 화면
+        if let card = dependency.cardsOnFileRepository.cardOnFile.value.first {
+            dependency.paymentMethodStream.send(card)
             router?.attachEnterAmount()
+        } else {
+            router?.attachAddPaymentMethod()
         }
     }
     
@@ -80,5 +86,13 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     func enterAmountDidTapClose() {
         router?.detachEnterAmount()
         listener?.topupDidClose() // topup 전체 flow가 끝난 것이기 때문에 listener에게 알리기
+    }
+    
+    func enterAmountDidTapPaymentMethod() {
+        router?.attachCardOnFile(paymentmethods: paymentMethods)
+    }
+    
+    func cardOnFileDidTapClose() {
+        router?.detachCardOnFile()
     }
 }

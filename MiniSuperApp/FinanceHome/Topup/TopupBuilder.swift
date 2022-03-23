@@ -16,9 +16,22 @@ protocol TopupDependency: Dependency {
     var cardsOnFileRepository: CardOnFileRepository { get }
 }
 
-final class TopupComponent: Component<TopupDependency>, TopupInteractorDependency, AddPaymentMethodDependency, EnterAmountDependency {
+final class TopupComponent: Component<TopupDependency>, TopupInteractorDependency, AddPaymentMethodDependency, EnterAmountDependency, CardOnFileDependency {
+    var selectedPaymentMethod: ReadOnlyCurrentValuePublisher<PaymentMethod> { paymentMethodStream }
+    
     var cardsOnFileRepository: CardOnFileRepository { dependency.cardsOnFileRepository }
     fileprivate var topupBaseViewController: ViewControllable { dependency.topupBaseViewController }
+    
+    let paymentMethodStream: CurrentValuePublisher<PaymentMethod>
+    // 부모 Reblet이 자식 Reblet에게 데이터 전달 하는 방법 -> `Stream`을 사용한다.
+    
+    init(
+        dependency: TopupDependency,
+        paymentMethodStrema: CurrentValuePublisher<PaymentMethod>
+    ) {
+        self.paymentMethodStream = paymentMethodStrema
+        super.init(dependency: dependency)
+    }
 }
 
 // MARK: - Builder
@@ -34,18 +47,22 @@ final class TopupBuilder: Builder<TopupDependency>, TopupBuildable {
     }
 
     func build(withListener listener: TopupListener) -> TopupRouting {
-        let component = TopupComponent(dependency: dependency)
+        let paymemtMethodStream = CurrentValuePublisher(PaymentMethod(id: "", name: "", digits: "", color: "", isPrimary: false))
+        
+        let component = TopupComponent(dependency: dependency, paymentMethodStrema: paymemtMethodStream)
         let interactor = TopupInteractor(dependency: component)
         interactor.listener = listener
         
         let addPaymentMethodBuilder = AddPaymentMethodBuilder(dependency: component)
         let enterAmountBuilder = EnterAmountBuilder(dependency: component)
+        let cardOnFileBuilder = CardOnFileBuilder(dependency: component)
         
         return TopupRouter(
             interactor: interactor,
             viewController: component.topupBaseViewController,
             addPaymentMethodBuildable: addPaymentMethodBuilder,
-            enterAmountBuildable: enterAmountBuilder
+            enterAmountBuildable: enterAmountBuilder,
+            cardOnFileBuildable: cardOnFileBuilder
         )
     }
 }
