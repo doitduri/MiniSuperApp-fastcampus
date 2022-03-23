@@ -10,14 +10,16 @@ import ModernRIBs
 protocol TopupRouting: Routing {
     func cleanupViews()
     
-    func attachAddPaymentMethod()
+    func attachAddPaymentMethod(closeButtonType: DismissButtonType)
     func detachAddPaymentMethod()
     
     func attachEnterAmount()
     func detachEnterAmount()
     
-    func attachCardOnFile(paymentmethods: [PaymentMethod])
+    func attachCardOnFile(paymentMethods: [PaymentMethod])
     func detachCardOnFile()
+    
+    func popToRoot()
 }
 
 protocol TopupListener: AnyObject {
@@ -39,6 +41,8 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     
     let presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy
     
+    private var isEnterAmountRoot: Bool = false
+    
     private var paymentMethods: [PaymentMethod] { self.dependency.cardsOnFileRepository.cardOnFile.value }
     
     private let dependency: TopupInteractorDependency
@@ -57,10 +61,12 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
         
         // 카드의 개수에 따라서 다른 화면을 띄우기
         if let card = dependency.cardsOnFileRepository.cardOnFile.value.first {
+            isEnterAmountRoot = true
             dependency.paymentMethodStream.send(card)
             router?.attachEnterAmount()
         } else {
-            router?.attachAddPaymentMethod()
+            isEnterAmountRoot = false
+            router?.attachAddPaymentMethod(closeButtonType: .close)
         }
     }
     
@@ -68,7 +74,6 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
         super.willResignActive()
         
         router?.cleanupViews()
-        // TODO: Pause any business logic.
     }
     
     func presentationControllerDidDismiss() {
@@ -77,11 +82,21 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     
     func addPaymentMethodDidTapClose() {
         router?.detachAddPaymentMethod()
-        listener?.topupDidClose()
+        
+        if isEnterAmountRoot == false {
+            listener?.topupDidFinish()
+        }
     }
     
     func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) {
+        dependency.paymentMethodStream.send(paymentMethod)
         
+        if isEnterAmountRoot {
+            router?.popToRoot()
+        } else {
+            isEnterAmountRoot = true
+            router?.attachEnterAmount()
+        }
     }
     
     func enterAmountDidTapClose() {
@@ -90,7 +105,7 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     }
     
     func enterAmountDidTapPaymentMethod() {
-        router?.attachCardOnFile(paymentmethods: paymentMethods)
+        router?.attachCardOnFile(paymentMethods: paymentMethods)
     }
     
     func enterAmountDidFinishTopup() {
@@ -102,7 +117,7 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     }
     
     func cardOnFileDidTapAddCard() {
-        // attach add card
+        router?.attachAddPaymentMethod(closeButtonType: .back)
     }
     
     func cardOnFileDidSelect(at index: Int) {
