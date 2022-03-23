@@ -12,6 +12,9 @@ protocol TopupRouting: Routing {
     
     func attachAddPaymentMethod()
     func detachAddPaymentMethod()
+    
+    func attachEnterAmount()
+    func detachEnterAmount()
 }
 
 protocol TopupListener: AnyObject {
@@ -50,6 +53,7 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
         
         } else {
             // 금액 입력 화면
+            router?.attachEnterAmount()
         }
     }
     
@@ -71,5 +75,10 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     
     func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) {
         
+    }
+    
+    func enterAmountDidTapClose() {
+        router?.detachEnterAmount()
+        listener?.topupDidClose() // topup 전체 flow가 끝난 것이기 때문에 listener에게 알리기
     }
 }

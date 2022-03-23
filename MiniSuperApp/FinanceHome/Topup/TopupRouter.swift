@@ -7,7 +7,7 @@
 
 import ModernRIBs
 
-protocol TopupInteractable: Interactable, AddPaymentMethodListener {
+protocol TopupInteractable: Interactable, AddPaymentMethodListener, EnterAmountListener {
     var router: TopupRouting? { get set }
     var listener: TopupListener? { get set }
     var presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy { get }
@@ -24,13 +24,18 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
     private let addPaymentMethodBuildable: AddPaymentMethodBuildable
     private var addPaymnetMethodRouting: Routing?
     
+    private let enterAmountBuildable: EnterAmountBuildable
+    private var enterAmountRouting: Routing?
+    
     init(
         interactor: TopupInteractable,
         viewController: ViewControllable,
-        addPaymentMethodBuildable: AddPaymentMethodBuildable
+        addPaymentMethodBuildable: AddPaymentMethodBuildable,
+        enterAmountBuildable: EnterAmountBuildable
     ) {
         self.viewController = viewController
         self.addPaymentMethodBuildable = addPaymentMethodBuildable
+        self.enterAmountBuildable = enterAmountBuildable
         super.init(interactor: interactor)
         interactor.router = self
     }
@@ -60,6 +65,24 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
         dismissPresentedNavigation(completion: nil)
         detachChild(router)
         addPaymnetMethodRouting = nil
+    }
+    
+    func attachEnterAmount() {
+        if enterAmountRouting != nil {
+            return
+        }
+        
+        let router = enterAmountBuildable.build(withListener: interactor)
+        presentInsideNavigation(router.viewControllable)
+        attachChild(router)
+        addPaymnetMethodRouting = router
+    }
+    
+    func detachEnterAmount() {
+        guard let router = addPaymnetMethodRouting else { return }
+        dismissPresentedNavigation(completion: nil)
+        detachChild(router)
+        enterAmountRouting = nil
     }
     
     private func presentInsideNavigation(_ viewControllable: ViewControllable) {
