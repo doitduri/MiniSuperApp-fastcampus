@@ -50,14 +50,21 @@ let package = Package(
             ]
         ),
         .target(
-            name: "Topup",
+            name: "TopupImp",
             dependencies: [
                 "ModernRIBs",
+                "Topup",
                 "FinanceEntity",
                 "FinanceRepository",
                 "AddPaymentMethod",
                 .product(name: "RIBsUtil", package: "Platform"),
                 .product(name: "SuperUI", package: "Platform")
+            ]
+        ),
+        .target( 
+            name: "Topup",
+            dependencies: [
+                "ModernRIBs"
             ]
         ),
         .target(

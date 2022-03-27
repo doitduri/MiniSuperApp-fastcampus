@@ -10,6 +10,7 @@ import FinanceRepository
 import AddPaymentMethod
 import CombineUtil
 import FinanceEntity
+import Topup
 
 public protocol TopupDependency: Dependency {
     // topup Reblet이 동작하기 위해 필요한 것들 (= dependency)
@@ -43,10 +44,6 @@ final class TopupComponent: Component<TopupDependency>, TopupInteractorDependenc
 }
 
 // MARK: - Builder
-
-public protocol TopupBuildable: Buildable {
-    func build(withListener listener: TopupListener) -> Routing
-}
 
 public final class TopupBuilder: Builder<TopupDependency>, TopupBuildable {
 
