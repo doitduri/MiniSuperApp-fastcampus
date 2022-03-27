@@ -12,6 +12,7 @@
 		C120C6B227F092EB00DB91BE /* ProfileHome in Frameworks */ = {isa = PBXBuildFile; productRef = C120C6B127F092EB00DB91BE /* ProfileHome */; };
 		C195E52927F0A92D00A79F2E /* Topup in Frameworks */ = {isa = PBXBuildFile; productRef = C195E52827F0A92D00A79F2E /* Topup */; };
 		C195E52B27F0A92F00A79F2E /* TopupImp in Frameworks */ = {isa = PBXBuildFile; productRef = C195E52A27F0A92F00A79F2E /* TopupImp */; };
+		C195E52D27F0AD8500A79F2E /* AddPaymentMethodImp in Frameworks */ = {isa = PBXBuildFile; productRef = C195E52C27F0AD8500A79F2E /* AddPaymentMethodImp */; };
 		C19B06D027ED5432005CEBA9 /* FinanceEntity in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06CF27ED5432005CEBA9 /* FinanceEntity */; };
 		C19B06D227ED5432005CEBA9 /* FinanceRepository in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06D127ED5432005CEBA9 /* FinanceRepository */; };
 		C19B06D427ED5432005CEBA9 /* CombineUtil in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06D327ED5432005CEBA9 /* CombineUtil */; };
@@ -60,6 +61,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1D18FAB27E9AF65007E2745 /* CombineExt in Frameworks */,
+				C195E52D27F0AD8500A79F2E /* AddPaymentMethodImp in Frameworks */,
 				C11310AD27ED406D00D797B6 /* AddPaymentMethod in Frameworks */,
 				C19B06D427ED5432005CEBA9 /* CombineUtil in Frameworks */,
 				C120C6B227F092EB00DB91BE /* ProfileHome in Frameworks */,
@@ -183,6 +185,7 @@
 				C1D671A827F0A1FD00354442 /* TransportHomeImp */,
 				C195E52827F0A92D00A79F2E /* Topup */,
 				C195E52A27F0A92F00A79F2E /* TopupImp */,
+				C195E52C27F0AD8500A79F2E /* AddPaymentMethodImp */,
 			);
 			productName = SuperRedApp;
 			productReference = F5829F5526DB2BC400BFA8CD /* MiniSuperApp.app */;
@@ -480,6 +483,10 @@
 		C195E52A27F0A92F00A79F2E /* TopupImp */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TopupImp;
+		};
+		C195E52C27F0AD8500A79F2E /* AddPaymentMethodImp */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AddPaymentMethodImp;
 		};
 		C19B06CF27ED5432005CEBA9 /* FinanceEntity */ = {
 			isa = XCSwiftPackageProductDependency;
