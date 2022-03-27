@@ -10,12 +10,13 @@
 		C11310AD27ED406D00D797B6 /* AddPaymentMethod in Frameworks */ = {isa = PBXBuildFile; productRef = C11310AC27ED406D00D797B6 /* AddPaymentMethod */; };
 		C120C6B027F0912B00DB91BE /* AppHome in Frameworks */ = {isa = PBXBuildFile; productRef = C120C6AF27F0912B00DB91BE /* AppHome */; };
 		C120C6B227F092EB00DB91BE /* ProfileHome in Frameworks */ = {isa = PBXBuildFile; productRef = C120C6B127F092EB00DB91BE /* ProfileHome */; };
+		C195E52927F0A92D00A79F2E /* Topup in Frameworks */ = {isa = PBXBuildFile; productRef = C195E52827F0A92D00A79F2E /* Topup */; };
+		C195E52B27F0A92F00A79F2E /* TopupImp in Frameworks */ = {isa = PBXBuildFile; productRef = C195E52A27F0A92F00A79F2E /* TopupImp */; };
 		C19B06D027ED5432005CEBA9 /* FinanceEntity in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06CF27ED5432005CEBA9 /* FinanceEntity */; };
 		C19B06D227ED5432005CEBA9 /* FinanceRepository in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06D127ED5432005CEBA9 /* FinanceRepository */; };
 		C19B06D427ED5432005CEBA9 /* CombineUtil in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06D327ED5432005CEBA9 /* CombineUtil */; };
 		C19B06D627ED5446005CEBA9 /* RIBsUtil in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06D527ED5446005CEBA9 /* RIBsUtil */; };
 		C19B06D827ED5446005CEBA9 /* SuperUI in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06D727ED5446005CEBA9 /* SuperUI */; };
-		C19B06DA27ED7927005CEBA9 /* Topup in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06D927ED7927005CEBA9 /* Topup */; };
 		C19B06DC27ED7AAA005CEBA9 /* FinanceHome in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06DB27ED7AAA005CEBA9 /* FinanceHome */; };
 		C19B06E027EDAA69005CEBA9 /* TransportHome in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06DF27EDAA69005CEBA9 /* TransportHome */; };
 		C1D18FAB27E9AF65007E2745 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = C1D18FAA27E9AF65007E2745 /* CombineExt */; };
@@ -63,7 +64,7 @@
 				C19B06D427ED5432005CEBA9 /* CombineUtil in Frameworks */,
 				C120C6B227F092EB00DB91BE /* ProfileHome in Frameworks */,
 				C1D671A927F0A1FD00354442 /* TransportHomeImp in Frameworks */,
-				C19B06DA27ED7927005CEBA9 /* Topup in Frameworks */,
+				C195E52B27F0A92F00A79F2E /* TopupImp in Frameworks */,
 				C19B06D027ED5432005CEBA9 /* FinanceEntity in Frameworks */,
 				C19B06D827ED5446005CEBA9 /* SuperUI in Frameworks */,
 				C19B06E027EDAA69005CEBA9 /* TransportHome in Frameworks */,
@@ -72,6 +73,7 @@
 				C120C6B027F0912B00DB91BE /* AppHome in Frameworks */,
 				C19B06DC27ED7AAA005CEBA9 /* FinanceHome in Frameworks */,
 				C19B06D227ED5432005CEBA9 /* FinanceRepository in Frameworks */,
+				C195E52927F0A92D00A79F2E /* Topup in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -174,12 +176,13 @@
 				C19B06D327ED5432005CEBA9 /* CombineUtil */,
 				C19B06D527ED5446005CEBA9 /* RIBsUtil */,
 				C19B06D727ED5446005CEBA9 /* SuperUI */,
-				C19B06D927ED7927005CEBA9 /* Topup */,
 				C19B06DB27ED7AAA005CEBA9 /* FinanceHome */,
 				C19B06DF27EDAA69005CEBA9 /* TransportHome */,
 				C120C6AF27F0912B00DB91BE /* AppHome */,
 				C120C6B127F092EB00DB91BE /* ProfileHome */,
 				C1D671A827F0A1FD00354442 /* TransportHomeImp */,
+				C195E52827F0A92D00A79F2E /* Topup */,
+				C195E52A27F0A92F00A79F2E /* TopupImp */,
 			);
 			productName = SuperRedApp;
 			productReference = F5829F5526DB2BC400BFA8CD /* MiniSuperApp.app */;
@@ -470,6 +473,14 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = ProfileHome;
 		};
+		C195E52827F0A92D00A79F2E /* Topup */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Topup;
+		};
+		C195E52A27F0A92F00A79F2E /* TopupImp */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TopupImp;
+		};
 		C19B06CF27ED5432005CEBA9 /* FinanceEntity */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FinanceEntity;
@@ -489,10 +500,6 @@
 		C19B06D727ED5446005CEBA9 /* SuperUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SuperUI;
-		};
-		C19B06D927ED7927005CEBA9 /* Topup */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Topup;
 		};
 		C19B06DB27ED7AAA005CEBA9 /* FinanceHome */ = {
 			isa = XCSwiftPackageProductDependency;

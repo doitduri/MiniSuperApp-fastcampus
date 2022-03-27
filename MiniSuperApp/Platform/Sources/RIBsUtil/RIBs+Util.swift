@@ -78,5 +78,16 @@ public extension ViewControllable {
         self.uiviewController.navigationController?.setViewControllers(viewControllerables.map(\.uiviewController), animated: true)
       }
     }
+    
+    var topViewControllerable: ViewControllable {
+        var top: ViewControllable = self
+        
+        while let presented = top.uiviewController.presentationController as? ViewControllable {
+            top = presented
+        }
+        
+        // 가장 위에 있는 뷰컨트롤러 반환
+        return top
+    }
   }
 
