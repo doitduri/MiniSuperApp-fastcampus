@@ -13,6 +13,7 @@ import FinanceEntity
 import RIBsUtil
 import SuperUI
 import Topup
+import DefaultsStore
 
 protocol TopupRouting: Routing {
     func cleanupViews()
@@ -34,6 +35,8 @@ protocol TopupInteractorDependency {
     var paymentMethodStream: CurrentValuePublisher<PaymentMethod> { get }
     // topup Reblet은 paymentMethod Stream의 값을 직접 사용하기 때문에, read-only가 아닌 currentValue~ publisher를 사용한다.
     // 그리고, 해당 값을 사용하는 주체이기 때문에 interactor의 dependency로 추가해준다.
+    
+    var defaultsStore: DefaultsStore { get }
 }
 
 final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodListener, AdaptivePresentationControllerDelegate {

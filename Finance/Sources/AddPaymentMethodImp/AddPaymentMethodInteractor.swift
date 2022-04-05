@@ -10,6 +10,7 @@ import Combine
 import FinanceEntity
 import FinanceRepository
 import AddPaymentMethod
+import Foundation
 
 public protocol AddPaymentMethodRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
@@ -60,12 +61,14 @@ final class AddPaymentMethodInteractor: PresentableInteractor<AddPaymentMethodPr
     func didTapConfirm(with number: String, cvc: String, expiry: String) {
         // card를 추가하는 backend logic 호출(as Repository)
         let info = AddPaymentMethodInfo(number: number, cvc: cvc, expiration: expiry)
-        dependency.cardsOnFileRepository.addCard(info: info).sink(
-            receiveCompletion: { _ in },
-            receiveValue: { [weak self] method in
-            // 호출 성공 시 (paymentMethod: method)를 받고, listener인 부모 reblet에 알려줘야 함
-                self?.listener?.addPaymentMethodDidAddCard(paymentMethod: method)
-            }
-        ).store(in: &cancellables)
+        dependency.cardsOnFileRepository.addCard(info: info)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { _ in },
+                receiveValue: { [weak self] method in
+                    // 호출 성공 시 (paymentMethod: method)를 받고, listener인 부모 reblet에 알려줘야 함
+                    self?.listener?.addPaymentMethodDidAddCard(paymentMethod: method)
+                }
+            ).store(in: &cancellables)
     }
 }

@@ -5,8 +5,10 @@
 //  Created by 김두리 on 2022/03/23.
 //
 
+import Foundation
 import ModernRIBs
 import FinanceEntity
+import FinanceHome
 
 protocol CardOnFileRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
@@ -30,12 +32,14 @@ final class CardOnFileInteractor: PresentableInteractor<CardOnFilePresentable>, 
     weak var listener: CardOnFileListener?
 
     private let paymentMethods: [PaymentMethod]
+    private var cancellables: Set<AnyCancellable>
     
     init(
         presenter: CardOnFilePresentable,
         paymentMethods: [PaymentMethod]
     ) {
         self.paymentMethods = paymentMethods
+        self.cancellables = .init()
         super.init(presenter: presenter)
         presenter.listener = self
     }
@@ -43,7 +47,12 @@ final class CardOnFileInteractor: PresentableInteractor<CardOnFilePresentable>, 
     override func didBecomeActive() {
         super.didBecomeActive()
         
-        presenter.update(with: paymentMethods.map(PaymentMethodViewModel.init))
+        dependency.cardsOnFileRepository.cardOnFile
+            .receive(on: DispatchQueue.main)
+            .sink { methods in
+                let viewModels = methods.prefix(5).map(PaymentMethodViewModel.init)
+                self.presenter.update(with: viewModels)
+            }.store(in: &cancellables)
     }
 
     override func willResignActive() {
