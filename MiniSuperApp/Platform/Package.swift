@@ -27,14 +27,16 @@ let package = Package(
             targets: ["NetworkImp"]),
     ],
     dependencies: [
-        .package(name: "CombineExt", url: "https://github.com/CombineCommunity/CombineExt", .exact("1.0.0")),
+        .package(url: "https://github.com/CombineCommunity/CombineExt", .exact("1.0.0")),
         .package(name: "ModernRIBs", url: "https://github.com/DevYeom/ModernRIBs", .exact("1.0.1")),
+        .package(url: "https://github.com/pointfreeco/combine-schedulers", .exact("0.5.3")),
     ],
     targets: [
         .target(
             name: "CombineUtil",
             dependencies: [
-                "CombineExt"
+                "CombineExt",
+                .product(name: "CombineSchedulers", package: "combine-schedulers")
             ]),
         .target(
             name: "RIBsUtil",

@@ -11,6 +11,7 @@ import AddPaymentMethod
 import CombineUtil
 import FinanceEntity
 import Topup
+import CombineSchedulers
 
 public protocol TopupDependency: Dependency {
     // topup Reblet이 동작하기 위해 필요한 것들 (= dependency)
@@ -21,6 +22,7 @@ public protocol TopupDependency: Dependency {
     var cardsOnFileRepository: CardOnFileRepository { get }
     var superPayRepository: SuperPayRepository { get }
     var addPaymentMethodBuildable: AddPaymentMethodBuildable { get }
+    var mainQueue: AnySchedulerOf<DispathQueue> { get }
 }
 
 final class TopupComponent: Component<TopupDependency>, TopupInteractorDependency, EnterAmountDependency, CardOnFileDependency {
@@ -30,6 +32,7 @@ final class TopupComponent: Component<TopupDependency>, TopupInteractorDependenc
     var cardsOnFileRepository: CardOnFileRepository { dependency.cardsOnFileRepository }
     var superPayRepository: SuperPayRepository { dependency.superPayRepository }
     var addPaymentMethodBuildable: AddPaymentMethodBuildable { dependency.addPaymentMethodBuildable }
+    var mainQueue: AnySchedulerOf<DispathQueue> { dependency.mainQueue }
     
     fileprivate var topupBaseViewController: ViewControllable { dependency.topupBaseViewController }
     

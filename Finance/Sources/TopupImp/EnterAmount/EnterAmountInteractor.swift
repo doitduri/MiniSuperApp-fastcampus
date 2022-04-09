@@ -11,6 +11,7 @@ import Foundation
 import CombineUtil
 import FinanceEntity
 import FinanceRepository
+import CombineSchedulers
 
 protocol EnterAmountRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
@@ -32,6 +33,7 @@ protocol EnterAmountListener: AnyObject {
 protocol EnterAmountInteractorDependency {
     var selectedPaymentMethod: ReadOnlyCurrentValuePublisher<PaymentMethod> { get }
     var superPayRepository: SuperPayRepository { get }
+    var mainQueue: AnySchedulerOf<DispathQueue> { get }
 }
 
 final class EnterAmountInteractor: PresentableInteractor<EnterAmountPresentable>, EnterAmountInteractable, EnterAmountPresentableListener {
@@ -80,7 +82,9 @@ final class EnterAmountInteractor: PresentableInteractor<EnterAmountPresentable>
             amount: amount,
             paymentMethodID: dependency.selectedPaymentMethod.value.id
         )
-            .receive(on: DispatchQueue.main)
+        // 테스트를 통제할 수 없는 부분 (비동기코드), 따라서 테스트에 따라 주입을 받게 해야 함
+//            .receive(on: ImmediateScheduler.shared)
+            .receive(on: dependency.mainQueue)
             .sink(
                 receiveCompletion: { [weak self] _ in
                     self?.presenter.stopLoading()

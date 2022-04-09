@@ -28,7 +28,6 @@
 		C19B06D827ED5446005CEBA9 /* SuperUI in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06D727ED5446005CEBA9 /* SuperUI */; };
 		C19B06DC27ED7AAA005CEBA9 /* FinanceHome in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06DB27ED7AAA005CEBA9 /* FinanceHome */; };
 		C19B06E027EDAA69005CEBA9 /* TransportHome in Frameworks */ = {isa = PBXBuildFile; productRef = C19B06DF27EDAA69005CEBA9 /* TransportHome */; };
-		C1D18FAB27E9AF65007E2745 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = C1D18FAA27E9AF65007E2745 /* CombineExt */; };
 		C1D671A727F0A1BA00354442 /* AppRootComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D671A627F0A1BA00354442 /* AppRootComponent.swift */; };
 		C1D671A927F0A1FD00354442 /* TransportHomeImp in Frameworks */ = {isa = PBXBuildFile; productRef = C1D671A827F0A1FD00354442 /* TransportHomeImp */; };
 		F57EBE552738468700FE9319 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57EBE522738468700FE9319 /* Array+Utils.swift */; };
@@ -73,7 +72,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C1D18FAB27E9AF65007E2745 /* CombineExt in Frameworks */,
 				C195E52D27F0AD8500A79F2E /* AddPaymentMethodImp in Frameworks */,
 				C11310AD27ED406D00D797B6 /* AddPaymentMethod in Frameworks */,
 				C19B06D427ED5432005CEBA9 /* CombineUtil in Frameworks */,
@@ -192,7 +190,6 @@
 			name = MiniSuperApp;
 			packageProductDependencies = (
 				F5829F6D26DB2DE900BFA8CD /* ModernRIBs */,
-				C1D18FAA27E9AF65007E2745 /* CombineExt */,
 				C11310AC27ED406D00D797B6 /* AddPaymentMethod */,
 				C19B06CF27ED5432005CEBA9 /* FinanceEntity */,
 				C19B06D127ED5432005CEBA9 /* FinanceRepository */,
@@ -420,6 +417,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9Y2YJ5DNS7;
 				INFOPLIST_FILE = MiniSuperApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -438,6 +436,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 9Y2YJ5DNS7;
 				INFOPLIST_FILE = MiniSuperApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -556,11 +555,6 @@
 		C19B06DF27EDAA69005CEBA9 /* TransportHome */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = TransportHome;
-		};
-		C1D18FAA27E9AF65007E2745 /* CombineExt */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C1D18FA927E9AF65007E2745 /* XCRemoteSwiftPackageReference "CombineExt" */;
-			productName = CombineExt;
 		};
 		C1D671A827F0A1FD00354442 /* TransportHomeImp */ = {
 			isa = XCSwiftPackageProductDependency;

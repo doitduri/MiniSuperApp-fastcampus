@@ -9,15 +9,18 @@ import ModernRIBs
 import CombineUtil
 import FinanceEntity
 import FinanceRepository
+import CombineSchedulers
 
 protocol EnterAmountDependency: Dependency {
     var selectedPaymentMethod: ReadOnlyCurrentValuePublisher<PaymentMethod> { get }
     var superPayRepository: SuperPayRepository { get }
+    var mainQueue: AnySchedulerOf<DispathQueue> { get }
 }
 
 final class EnterAmountComponent: Component<EnterAmountDependency>, EnterAmountInteractorDependency {
     var selectedPaymentMethod: ReadOnlyCurrentValuePublisher<PaymentMethod> { dependency.selectedPaymentMethod }
     var superPayRepository: SuperPayRepository { dependency.superPayRepository }
+    var mainQueue: AnySchedulerOf<DispathQueue> { dependency.mainQueue }
 }
 
 // MARK: - Builder
