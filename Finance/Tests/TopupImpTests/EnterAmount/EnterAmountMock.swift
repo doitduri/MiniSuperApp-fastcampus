@@ -11,6 +11,7 @@ import FinanceEntity
 import FinanceRepository
 import FinanceRepositoryTestSuppport
 import CombineSchedulers
+import RIBsTestSupport
 @testable import TopupImp
 
 final class EnterAmountPresentableMock: EnterAmountPresentable {
@@ -75,4 +76,25 @@ final class EnterAmountListenerMock: EnterAmountListener {
     func enterAmountDidFinishTopup() {
         enterAmountDidFinishTopupCallCount += 1
     }
+}
+
+final class EnterAmountBuildableMock: EnterAmountBuildable {
+    
+    var buildHandler: ((_ linster: EnterAmountListener) -> EnterAmountRouting)?
+    
+    var buildCallCount = 0
+    
+    func build(withListener listenr: EnterAmountListener) -> EnterAmountRouting {
+        buildCallCount += 1
+        
+        if let buildHandler = buildHandler {
+            return buildHandler(listenr)
+        }
+        
+        fatalError()
+    }
+}
+
+final class EnterAmountRoutingMock: ViewableRoutingMock, EnterAmountRouting {
+    
 }
